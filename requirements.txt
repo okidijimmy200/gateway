@@ -1,0 +1,3 @@
+Flask==2.2.2
+grpcio-tools ~= 1.30
+Flask-Injector=0.14.0
