@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+service SportBetManagementService {
+    rpc CreateBet (CreateBetRequest) returns (CreateBetResponse);
+    rpc ReadBet (ReadBetRequest) returns (ReadBetResponse);
+    rpc UpdateBet (UpdateBetRequest) returns (UpdateBetResponse);
+    rpc DeleteBet (DeleteBetRequest) returns (DeleteBetResponse);
+}
+
+message CreateBetRequest {
+    string league = 1;
+    string home_team = 2;
+    string away_team = 3;
+    float home_team_win_odds = 4;
+    float away_team_win_odds = 5;
+    float draw_odds = 6;
+    string game_date = 7;
+    
+}
+
+message CreateBetResponse {
+    int32 code = 1;
+    string reason = 2;
+}
+
+message ReadBetRequest {
+    string league = 1;
+    string date_range =2;
+}
+
+message Odds {
+    string league = 1;
+    string home_team = 2;
+    string away_team = 3;
+    float home_team_win_odds = 4;
+    float away_team_win_odds = 5;
+    float draw_odds = 6;
+    string game_date = 7;
+}
+
+message ReadBetResponse {
+    int32 code = 1;
+    repeated Odds response = 2;
+    string reason = 3;
+
+}
+
+message UpdateBetRequest {
+    string league = 1;
+    string home_team = 2;
+    string away_team = 3;
+    float home_team_win_odds = 4;
+    float away_team_win_odds = 5;
+    float draw_odds = 6;
+    string game_date = 7;
+}
+
+message UpdateBetResponse {
+    int32 code = 1;
+    string reason = 2;
+}
+
+message DeleteBetRequest {
+    string league = 1; 
+    string home_team = 2;
+    string away_team = 3;
+    string game_date = 4;
+}
+
+message DeleteBetResponse {
+    string code = 1;
+    string reason = 2;
+}

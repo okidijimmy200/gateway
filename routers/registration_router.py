@@ -3,24 +3,24 @@ import generated.auth_pb2 as auth_pb2
 import generated.auth_pb2_grpc as auth_pb2_grpc
 from flask import  request
 from flask import Blueprint, jsonify
-from middleware.middleware import token_required
 
-auth_api = Blueprint('auth_api', __name__)
+registration_api = Blueprint('registration_api', __name__)
 
+'''schema for user model'''
 
-@auth_api.route('/login', methods=['POST'])
-def login():
+'''signup user'''
+@registration_api.route('/signup', methods = ['POST'])
+def signup():
     try:
         data = request.get_json()
         with grpc.insecure_channel('0.0.0.0:50052') as channel:
             stub = auth_pb2_grpc.UserManagenmentServiceStub(channel)
-            response = stub.Login(auth_pb2.LoginRequest(email=data["email"], password=data["password"]))
+            response = stub.SignUp(auth_pb2.SignUpRequest(username=data["username"], email=data["email"], password=data["password"]))
             reason = {
                 "code": response.code,
-                "reason": response.reason,
-                "token": response.token
+                "reason": response.reason
             }
-            print(reason)
+            print(response)
             return jsonify(reason)
     except Exception as e:
         result = (
@@ -29,6 +29,3 @@ def login():
             )
         print(result)
         return result
-
-
-
