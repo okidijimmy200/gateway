@@ -3,6 +3,7 @@ import generated.auth_pb2 as auth_pb2
 import generated.auth_pb2_grpc as auth_pb2_grpc
 from flask import request, jsonify
 from functools import wraps
+from server.grpc.grpc import AuthClient
 
 '''decorator for verifying jwt'''
 def token_required(f):
@@ -24,16 +25,15 @@ def token_required(f):
         '''decode the payload to get stored details'''
         try:
             # result = get_token.get_current_user_token(f, token, *args, **kwargs)
-            with grpc.insecure_channel('0.0.0.0:50052') as channel:
-                stub = auth_pb2_grpc.UserManagenmentServiceStub(channel)
-                response = stub.ValidateToken(auth_pb2.ValidateTokenRequest(token=token))
-                reason = jsonify({
-                    "code": response.code,
-                    "reason": response.reason,
-                    "user_id": response.user_id
-                })
-                print(reason)
-                return f(reason, *args, **kwargs)
+            token_request = AuthClient()
+            response = token_request.token(token=token)
+            reason = jsonify({
+                "code": response.code,
+                "reason": response.reason,
+                "user_id": response.user_id
+            })
+            print(reason)
+            return f(reason, *args, **kwargs)
         except Exception as e:
             result = (
                     f"-Error "

@@ -25,17 +25,19 @@ message CreateBetResponse {
 
 message ReadBetRequest {
     string league = 1;
-    string date_range =2;
+    string start_date =2;
+    string end_date =3;
 }
 
 message Odds {
-    string league = 1;
-    string home_team = 2;
-    string away_team = 3;
-    float home_team_win_odds = 4;
-    float away_team_win_odds = 5;
-    float draw_odds = 6;
-    string game_date = 7;
+    string id = 1;
+    string league = 2;
+    string home_team = 3;
+    string away_team = 4;
+    float home_team_win_odds = 5;
+    float away_team_win_odds = 6;
+    float draw_odds = 7;
+    string game_date = 8;
 }
 
 message ReadBetResponse {
