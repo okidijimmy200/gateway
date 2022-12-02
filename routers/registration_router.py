@@ -13,7 +13,9 @@ def signup():
         data = request.get_json()
         signup_client = AuthClient()
         response = signup_client.signup(
-            username=data["username"], email=data["email"], password=data["password"]
+            username=data["username"], 
+            email=data["email"], 
+            password=data["password"]
         )
         
         reason = {

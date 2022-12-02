@@ -48,13 +48,14 @@ message ReadBetResponse {
 }
 
 message UpdateBetRequest {
-    string league = 1;
-    string home_team = 2;
-    string away_team = 3;
-    float home_team_win_odds = 4;
-    float away_team_win_odds = 5;
-    float draw_odds = 6;
-    string game_date = 7;
+    int32 id = 1;
+    string league = 2;
+    string home_team = 3;
+    string away_team = 4;
+    float home_team_win_odds = 5;
+    float away_team_win_odds = 6;
+    float draw_odds = 7;
+    string game_date = 8;
 }
 
 message UpdateBetResponse {
@@ -70,6 +71,6 @@ message DeleteBetRequest {
 }
 
 message DeleteBetResponse {
-    string code = 1;
+    int32 code = 1;
     string reason = 2;
 }

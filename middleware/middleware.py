@@ -1,6 +1,3 @@
-import grpc
-import generated.auth_pb2 as auth_pb2
-import generated.auth_pb2_grpc as auth_pb2_grpc
 from flask import request, jsonify
 from functools import wraps
 from server.grpc.grpc import AuthClient

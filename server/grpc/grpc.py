@@ -53,6 +53,29 @@ class SportsBet:
         )
         return self.stub.ReadBet(read_request)
 
+    def update_bet(self,league, id, home_team, away_team, home_team_win_odds, away_team_win_odds,draw_odds, game_date):
+        update_request = sportbet_pb2.UpdateBetRequest(
+            id=id,
+            league=league,
+            home_team=home_team,
+            away_team=away_team,
+            home_team_win_odds=home_team_win_odds,
+            away_team_win_odds=away_team_win_odds,
+            draw_odds=draw_odds,
+            game_date=game_date
+        )
+        return self.stub.UpdateBet(update_request)
+
+    def delete_bet(self, league, home_team, away_team, game_date):
+        delete_request = sportbet_pb2.DeleteBetRequest(
+            league=league,
+            home_team=home_team,
+            away_team=away_team,
+            game_date=game_date
+        )
+        return self.stub.DeleteBet(delete_request)
+
+
 
 
 class ClientManagmentService:
