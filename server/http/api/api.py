@@ -2,7 +2,7 @@ from google.protobuf.json_format import MessageToJson
 from flask import  request
 from flask import Blueprint, jsonify
 from middleware.middleware import token_required
-from server.grpc.grpc import SportsBet
+from provider.api.api import SportsBet
 
 sport_bet = Blueprint('sport_bet', __name__)
 

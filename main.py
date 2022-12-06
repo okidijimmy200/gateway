@@ -1,19 +1,16 @@
-from flask import Flask
-from routers.auth_router import auth_api
-from routers.registration_router import registration_api
-from routers.bet_router import sport_bet
-from server.grpc.grpc import ClientManagmentService
-from service.flask import FlaskService
+from server.http.server import get_app
+from provider.auth.auth import Auth
+from provider.register.register import Register
+from provider.api.api import SportsBet 
+from service.auth.auth import Auth as AuthService
+from service.registration.registration import Registration as RegistrationService
+from service.api.api import SportBet as SportBetService
 
-app = Flask(__name__) 
-
-app.register_blueprint(registration_api, name='signup')
-app.register_blueprint(auth_api, name='auth')
-app.register_blueprint(sport_bet, name='sport_bet')
-
-client_server = app.run(host="localhost", port=8000, debug=True)
 
 if __name__ == '__main__':
-    flask_service = FlaskService(client_server)
-    client_management_service = ClientManagmentService(flask_service)
-    client_management_service.run()
+    app = get_app(
+        AuthService(Auth()),
+        RegistrationService(Register()),
+        SportBetService(SportsBet())
+        )
+    app.run(host="localhost", port=8000, debug=True)

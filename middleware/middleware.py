@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from functools import wraps
-from server.grpc.grpc import AuthClient
+from provider.auth.auth import Auth
 
 '''decorator for verifying jwt'''
 def token_required(f):
@@ -22,7 +22,7 @@ def token_required(f):
         '''decode the payload to get stored details'''
         try:
             # result = get_token.get_current_user_token(f, token, *args, **kwargs)
-            token_request = AuthClient()
+            token_request = Auth()
             response = token_request.token(token=token)
             reason = jsonify({
                 "code": response.code,

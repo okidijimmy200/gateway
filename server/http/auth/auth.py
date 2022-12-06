@@ -1,19 +1,15 @@
-import grpc
-import generated.auth_pb2 as auth_pb2
-import generated.auth_pb2_grpc as auth_pb2_grpc
 from flask import  request
 from flask import Blueprint, jsonify
-from middleware.middleware import token_required
-from server.grpc.grpc import AuthClient
+from provider.auth.auth import Auth
 
-auth_api = Blueprint('auth_api', __name__)
+auth_api = Blueprint('auth', __name__)
 
 
 @auth_api.route('/login', methods=['POST'])
 def login():
     try:
         data = request.get_json()
-        login_client = AuthClient()
+        login_client = Auth()
         response = login_client.login(
             email=data["email"], password=data["password"]
         )

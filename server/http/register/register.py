@@ -1,6 +1,6 @@
 from flask import  request
 from flask import Blueprint, jsonify
-from server.grpc.grpc import AuthClient
+from provider.register.register import Register
 
 registration_api = Blueprint('registration_api', __name__)
 
@@ -11,7 +11,7 @@ registration_api = Blueprint('registration_api', __name__)
 def signup():
     try:
         data = request.get_json()
-        signup_client = AuthClient()
+        signup_client = Register()
         response = signup_client.signup(
             username=data["username"], 
             email=data["email"], 
