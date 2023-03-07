@@ -1,8 +1,14 @@
-from google.protobuf.json_format import MessageToJson
 from flask import  request
 from flask import Blueprint, jsonify
-from middleware.middleware import token_required
-from provider.api.api import SportsBet
+from server.http.middleware.middleware import token_required
+from google.protobuf.json_format import MessageToJson
+import server.http.server as server
+from models.models.sportbet_models import (
+    CreateBetRequest,
+    UpdateBetRequest,
+    ReadBetRequest,
+    DeleteBetRequest  
+)
 
 sport_bet = Blueprint('sport_bet', __name__)
 
@@ -11,18 +17,23 @@ sport_bet = Blueprint('sport_bet', __name__)
 def create_bet(current_user):
     try:
         if current_user:
-            data = request.get_json()
-            create_bet_client = SportsBet()
-            response = create_bet_client.create_bet(
-                league=data['league'],
-                home_team=data['home_team'],
-                away_team=data['away_team'],
-                home_team_win_odds=data['home_team_win_odds'],
-                away_team_win_odds=data['away_team_win_odds'],
-                draw_odds=data['draw_odds'],
-                game_date=data['game_date']
+            data: dict = request.get_json()
+
+            # there needs to be isolation of provider from server from everthing
+            # except service. (the provider only imports models and service)
+            
+            req = CreateBetRequest(
+                data.get('league'),
+                data.get('home_team'),
+                data.get('away_team'),
+                data.get('home_team_win_odds'),
+                data.get('away_team_win_odds'),
+                data.get('draw_odds'),
+                data.get('game_date'),
                 )
-            print(response.code)
+            print(req.league)
+            response = server.sport_service.create_bet(req)
+            # print(response.code)
             reason = {
                 "code": response.code,
                 "reason": response.reason
@@ -43,25 +54,13 @@ def create_bet(current_user):
 def read_bet(current_user):
     try:
         if current_user:
-            data = {
-            "league": f"{request.args.to_dict()['league']}",
-            "start_date": f"{request.args.to_dict()['start_date']}",
-            "end_date": f"{request.args.to_dict()['end_date']}"
-        }
-            read_bet_client = SportsBet()
-            response =  read_bet_client.read_bet(league=data['league'], 
-                                            start_date=data['start_date'], 
-                                            end_date=data["end_date"]
-                            )
-            reason = {
-                "code": response.code,
-                "response": response.response,
-                "reason": response.reason
-            }
-            # print(response)
-            serialized = MessageToJson(response)
-            print(serialized)
-            return serialized
+            req = ReadBetRequest(
+                request.args.to_dict()['league'],
+                request.args.to_dict()['start_date'],
+                request.args.to_dict()['end_date']
+            )
+            response = server.sport_service.read_bet(req)
+            return MessageToJson(response)
     except Exception as e:
         result = (
                 f"-Error "
@@ -70,24 +69,23 @@ def read_bet(current_user):
         print(result)
         return result
 
-@sport_bet.route('/updatebet/<int:id>', methods=['PUT'])
+@sport_bet.route('/updatebet/<id>', methods=['PUT'])
 @token_required
 def update_bet(current_user, id):
     try:
         if current_user:
-            data = request.get_json()
-            update_bet_client = SportsBet()
-            response = update_bet_client.update_bet(
-                id=id,
-                league=data['league'],
-                home_team=data['home_team'],
-                away_team=data['away_team'],
-                home_team_win_odds=data['home_team_win_odds'],
-                away_team_win_odds=data['away_team_win_odds'],
-                draw_odds=data['draw_odds'],
-                game_date=data['game_date']
-                )
-            print(response.code)
+            data: dict = request.get_json()
+            req = UpdateBetRequest(
+                id,
+                data.get('league'),
+                data.get('home_team'),
+                data.get('away_team'),
+                data.get('home_team_win_odds'),
+                data.get('away_team_win_odds'),
+                data.get('draw_odds'),
+                data.get('game_date'),
+            )
+            response = server.sport_service.update_bet(req)
             reason = {
                 "code": response.code,
                 "reason": response.reason
@@ -108,21 +106,13 @@ def update_bet(current_user, id):
 def delete(current_user):
     try:
         if current_user:
-            data = {
-            "league": f"{request.args.to_dict()['league']}",
-            "home_team": f"{request.args.to_dict()['home_team']}",
-            "away_team": f"{request.args.to_dict()['away_team']}",
-            "game_date": f"{request.args.to_dict()['game_date']}"
-            }
-            print(data)
-            delete_bet_client = SportsBet()
-            response = delete_bet_client.delete_bet(
-                league=data['league'],
-                home_team=data['home_team'],
-                away_team=data['away_team'],
-                game_date=data['game_date']
-
+            req = DeleteBetRequest(
+                request.args.to_dict()['league'],
+                request.args.to_dict()['home_team'],
+                request.args.to_dict()['away_team'],
+                request.args.to_dict()['game_date']
             )
+            response = server.sport_service.delete_bet(req)
             reason = {
                 "code": response.code,
                 "reason": response.reason

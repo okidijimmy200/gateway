@@ -1,6 +1,9 @@
 from flask import  request
 from flask import Blueprint, jsonify
-from provider.auth.auth import Auth
+from models.models.user_models import (
+    LoginRequest
+)
+import server.http.server as server
 
 auth_api = Blueprint('auth', __name__)
 
@@ -8,11 +11,12 @@ auth_api = Blueprint('auth', __name__)
 @auth_api.route('/login', methods=['POST'])
 def login():
     try:
-        data = request.get_json()
-        login_client = Auth()
-        response = login_client.login(
-            email=data["email"], password=data["password"]
+        data: dict = request.get_json()
+        req = LoginRequest(
+            data.get('email'),
+            data.get('password')
         )
+        response = server.auth_service.login(req)
         
         reason = {
                 "code": response.code,

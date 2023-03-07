@@ -18,16 +18,16 @@ class SportBet:
 
     def create_bet(self, req: CreateBetRequest) -> CreateBetResponse:
         '''create bet'''
-        return self.sport_provider.create(req)
+        return self.sport_provider.create_bet(req)
 
     def read_bet(self, req: ReadBetRequest) -> ReadBetResponse:
         '''query and read bet'''
-        return self.sport_provider.read(req)
+        return self.sport_provider.read_bet(req)
 
     def update_bet(self, req: UpdateBetRequest) -> UpdateBetResponse:
         '''update bet'''
-        return self.sport_provider.update(req)
+        return self.sport_provider.update_bet(req)
 
     def delete_bet(self, req: DeleteBetRequest) -> DeleteBetResponse:
         '''delete bet'''
-        return self.sport_provider.delete(req)
+        return self.sport_provider.delete_bet(req)

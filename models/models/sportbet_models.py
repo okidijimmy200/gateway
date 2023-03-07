@@ -67,7 +67,7 @@ class ReadBetResponse:
         self.reason = reason
 
 class UpdateBetRequest:
-    id: int
+    id: str
     league: str
     home_team : str
     away_team: str
@@ -76,7 +76,7 @@ class UpdateBetRequest:
     draw_odds: float
     game_date: str
 
-    def __init__(self, id: int, league: str, home_team: str, away_team: str, home_team_win_odds: float, away_team_win_odds: float, draw_odds: float, game_date: str) -> None:
+    def __init__(self, id: str, league: str, home_team: str, away_team: str, home_team_win_odds: float, away_team_win_odds: float, draw_odds: float, game_date: str) -> None:
         self.id = id
         self.league = league
         self.home_team = home_team

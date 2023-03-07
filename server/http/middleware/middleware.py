@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from functools import wraps
-from provider.auth.auth import Auth
+import server.http.server as server
 
 '''decorator for verifying jwt'''
 def token_required(f):
@@ -11,7 +11,7 @@ def token_required(f):
         # jwt is passed in the request
         if "Authorization" in request.headers:
             token = request.headers["Authorization"].split(" ")[1]
-            # print(token)
+            
         if not token:
             return {
                 "message": "Authentication Token is missing!",
@@ -22,14 +22,13 @@ def token_required(f):
         '''decode the payload to get stored details'''
         try:
             # result = get_token.get_current_user_token(f, token, *args, **kwargs)
-            token_request = Auth()
-            response = token_request.token(token=token)
+            response = server.auth_service.validate_token(token)
+            # if type(response.user_id)
             reason = jsonify({
                 "code": response.code,
                 "reason": response.reason,
                 "user_id": response.user_id
             })
-            print(reason)
             return f(reason, *args, **kwargs)
         except Exception as e:
             result = (

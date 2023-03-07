@@ -1,7 +1,8 @@
 from typing import Tuple
 from service.interface import RegistrationProvider
 from models.models.user_models import (
-    SignUpRequest
+    SignUpRequest,
+    SignUpResponse
 )
 
 class Registration:
@@ -10,6 +11,8 @@ class Registration:
     def __init__(self, registration_provider: RegistrationProvider):
         self.registration_provider = registration_provider
 
-    def signup(self, request: SignUpRequest) -> Tuple[int, str]:
+    def signup(self, request: SignUpRequest) -> SignUpResponse:
         '''signup user'''
         return self.registration_provider.signup(request)
+
+

@@ -1,6 +1,9 @@
 from flask import  request
 from flask import Blueprint, jsonify
-from provider.register.register import Register
+import server.http.server as server
+from models.models.user_models import (
+    SignUpRequest
+)
 
 registration_api = Blueprint('registration_api', __name__)
 
@@ -10,13 +13,13 @@ registration_api = Blueprint('registration_api', __name__)
 @registration_api.route('/signup', methods = ['POST'])
 def signup():
     try:
-        data = request.get_json()
-        signup_client = Register()
-        response = signup_client.signup(
-            username=data["username"], 
-            email=data["email"], 
-            password=data["password"]
+        data: dict = request.get_json()
+        req = SignUpRequest(
+            data.get('username'),
+            data.get('email'),
+            data.get('password')
         )
+        response = server.reg_service.signup(req)
         
         reason = {
                 "code": response.code,
@@ -31,3 +34,4 @@ def signup():
             )
         print(result)
         return result
+
