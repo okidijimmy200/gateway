@@ -73,13 +73,14 @@ def read_bet(current_user):
 def update_bet(current_user):
     try:
         if current_user:
+            print(type(request.args.to_dict()['draw_odds']))
             req = UpdateBetRequest(
                 request.args.to_dict()['league'],
                 request.args.to_dict()['home_team'],
                 request.args.to_dict()['away_team'],
-                request.args.to_dict()['home_team_win_odds'],
-                request.args.to_dict()['away_team_win_odds'],
-                request.args.to_dict()['draw_odds'],
+                float(request.args.to_dict()['home_team_win_odds']),
+                float(request.args.to_dict()['away_team_win_odds']),
+                float(request.args.to_dict()['draw_odds']),
                 request.args.to_dict()['game_date']
             )
             response = server.sport_service.update_bet(req)
