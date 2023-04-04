@@ -33,7 +33,6 @@ class SportsBet:
 
     def update_bet(self,req):
         update_request = sportbet_pb2.UpdateBetRequest(
-            id=req.id,
             league=req.league,
             home_team=req.home_team,
             away_team=req.away_team,

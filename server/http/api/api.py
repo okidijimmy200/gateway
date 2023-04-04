@@ -68,21 +68,19 @@ def read_bet(current_user):
         print(result)
         return result
 
-@sport_bet.route('/updatebet/<id>', methods=['PUT'])
+@sport_bet.route('/updatebet', methods=['PUT'])
 @server.token_service.validate_token
-def update_bet(current_user, id):
+def update_bet(current_user):
     try:
         if current_user:
-            data: dict = request.get_json()
             req = UpdateBetRequest(
-                id,
-                data.get('league'),
-                data.get('home_team'),
-                data.get('away_team'),
-                data.get('home_team_win_odds'),
-                data.get('away_team_win_odds'),
-                data.get('draw_odds'),
-                data.get('game_date'),
+                request.args.to_dict()['league'],
+                request.args.to_dict()['home_team'],
+                request.args.to_dict()['away_team'],
+                request.args.to_dict()['home_team_win_odds'],
+                request.args.to_dict()['away_team_win_odds'],
+                request.args.to_dict()['draw_odds'],
+                request.args.to_dict()['game_date']
             )
             response = server.sport_service.update_bet(req)
             reason = {
