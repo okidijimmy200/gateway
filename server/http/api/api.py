@@ -1,24 +1,25 @@
 from flask import  request
 from flask import Blueprint, jsonify
-from server.http.middleware.middleware import token_required
 from google.protobuf.json_format import MessageToJson
-import server.http.server as server
 from models.models.sportbet_models import (
     CreateBetRequest,
     UpdateBetRequest,
     ReadBetRequest,
     DeleteBetRequest  
 )
+import server.http.server as server
+
 
 sport_bet = Blueprint('sport_bet', __name__)
 
+
 @sport_bet.route('/createbet', methods=['POST'])
-@token_required
+@server.token_service.validate_token
 def create_bet(current_user):
     try:
         if current_user:
+            print(current_user.data)
             data: dict = request.get_json()
-
             # there needs to be isolation of provider from server from everthing
             # except service. (the provider only imports models and service)
             
@@ -31,9 +32,7 @@ def create_bet(current_user):
                 data.get('draw_odds'),
                 data.get('game_date'),
                 )
-            print(req.league)
             response = server.sport_service.create_bet(req)
-            # print(response.code)
             reason = {
                 "code": response.code,
                 "reason": response.reason
@@ -50,7 +49,7 @@ def create_bet(current_user):
         return result
 
 @sport_bet.route('/readbet', methods=['GET'])
-@token_required
+@server.token_service.validate_token
 def read_bet(current_user):
     try:
         if current_user:
@@ -70,7 +69,7 @@ def read_bet(current_user):
         return result
 
 @sport_bet.route('/updatebet/<id>', methods=['PUT'])
-@token_required
+@server.token_service.validate_token
 def update_bet(current_user, id):
     try:
         if current_user:
@@ -102,7 +101,7 @@ def update_bet(current_user, id):
         return result
 
 @sport_bet.route('/deletebet', methods=['DELETE'])    
-@token_required  
+@server.token_service.validate_token  
 def delete(current_user):
     try:
         if current_user:

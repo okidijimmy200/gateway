@@ -1,5 +1,5 @@
 from typing import Tuple
-from service.interface import AuthProvider
+from service.interface import AuthProvider, TokenProvider
 from models.models.user_models import LoginRequest, ValidateTokenRequest, ValidateTokenResponse, LoginResponse
 
 class Auth:
@@ -12,6 +12,3 @@ class Auth:
         '''login user'''
         return self.auth_provider.login(request)
 
-    def validate_token(self, request: ValidateTokenRequest) -> ValidateTokenResponse:
-        '''validate token generated'''
-        return self.auth_provider.validate_token(request)

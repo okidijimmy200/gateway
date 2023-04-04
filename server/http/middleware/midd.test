@@ -1,23 +1,13 @@
-from flask import jsonify, request
-from functools import wraps
-from service.interface import TokenProvider
 
 
-'''decorator for verifying jwt'''
-class TokenRequiredService:
-    def __init__(self, deco: TokenProvider) -> None:
-        self.deco = deco
-
-    '''decorator for verifying jwt'''
-    def validate_token(self, f):
-
+    def __call__(self, f):
         @wraps(f)
         def decorated(*args, **kwargs):
             token = None
             # jwt is passed in the request
             if "Authorization" in request.headers:
                 token = request.headers["Authorization"].split(" ")[1]
-                
+                # print(token)
             if not token:
                 return {
                     "message": "Authentication Token is missing!",
@@ -45,7 +35,3 @@ class TokenRequiredService:
                 return result
 
         return decorated
-
-
-
-

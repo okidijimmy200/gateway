@@ -25,9 +25,6 @@ class AuthService(ABC):
     def login(self, request: LoginRequest) -> Tuple[int, str]:
         pass
 
-    @abstractmethod
-    def validate_token(self, request: ValidateTokenRequest) -> ValidateTokenResponse:
-        pass
 
 class RegistrationService(ABC):
     @abstractmethod
@@ -58,10 +55,6 @@ class AuthProvider(ABC):
     def login(self, request: LoginRequest) -> Tuple[int, str]:
         pass
 
-    @abstractmethod
-    def validate_token(self, request: ValidateTokenRequest) -> ValidateTokenResponse:
-        pass
-
 
 class RegistrationProvider(ABC):
     @abstractmethod
@@ -89,4 +82,14 @@ class SportbetProvider(ABC):
 
     @abstractmethod
     def delete_bet(self, req: DeleteBetRequest) -> DeleteBetResponse:
+        pass
+
+class TokenProvider(ABC):
+    @abstractmethod
+    def validate_token(self, request: ValidateTokenRequest) -> ValidateTokenResponse:
+        pass
+
+class TokenService(ABC):
+    @abstractmethod
+    def validate_token(self, *args, **kwargs):
         pass
