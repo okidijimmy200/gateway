@@ -1,14 +1,17 @@
 from flask import jsonify, request
 from functools import wraps
-from service.interface import TokenProvider
+from service.interface import AuthProvider
 
 
 '''decorator for verifying jwt'''
-class TokenRequiredService:
-    def __init__(self, deco: TokenProvider) -> None:
-        self.deco = deco
+
+
+class TokenRequired:
+    def __init__(self, auth_service: AuthProvider) -> None:
+        self.auth_service = auth_service
 
     '''decorator for verifying jwt'''
+
     def validate_token(self, f):
 
         @wraps(f)
@@ -17,7 +20,7 @@ class TokenRequiredService:
             # jwt is passed in the request
             if "Authorization" in request.headers:
                 token = request.headers["Authorization"].split(" ")[1]
-                
+
             if not token:
                 return {
                     "message": "Authentication Token is missing!",
@@ -28,8 +31,16 @@ class TokenRequiredService:
             '''decode the payload to get stored details'''
             try:
                 # result = get_token.get_current_user_token(f, token, *args, **kwargs)
-                response = self.deco.validate_token(token)
+                response = self.auth_service.validate_token(token)
                 # if type(response.user_id)
+
+                if response.code != 200:
+                    return {
+                        "message": response.reason,
+                        "data": None,
+                        "error": "Unauthorized"
+                    }, response.code
+
                 reason = jsonify({
                     "code": response.code,
                     "reason": response.reason,
@@ -38,14 +49,10 @@ class TokenRequiredService:
                 return f(reason, *args, **kwargs)
             except Exception as e:
                 result = (
-                        f"-Error "
-                        + f"{type(e).__name__} {str(e)}"
-                    )
+                    f"-Error "
+                    + f"{type(e).__name__} {str(e)}"
+                )
                 print(result)
                 return result
 
         return decorated
-
-
-
-

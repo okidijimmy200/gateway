@@ -1,6 +1,6 @@
-from flask import  request
+from flask import request
 from flask import Blueprint, jsonify
-from models.models.user_models import (
+from models.user_models import (
     LoginRequest
 )
 import server.http.server as server
@@ -17,21 +17,18 @@ def login():
             data.get('password')
         )
         response = server.auth_service.login(req)
-        
+
         reason = {
-                "code": response.code,
-                "reason": response.reason,
-                "token": response.token
-            }
+            "code": response.code,
+            "reason": response.reason,
+            "token": response.token
+        }
         print(reason)
         return jsonify(reason)
     except Exception as e:
         result = (
-                f"-Error "
-                + f"{type(e).__name__} {str(e)}"
-            )
+            f"-Error "
+            + f"{type(e).__name__} {str(e)}"
+        )
         print(result)
         return result
-
-
-

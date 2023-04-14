@@ -1,7 +1,7 @@
 from flask import  request
 from flask import Blueprint, jsonify
 from google.protobuf.json_format import MessageToJson
-from models.models.sportbet_models import (
+from models.sportbet_models import (
     CreateBetRequest,
     UpdateBetRequest,
     ReadBetRequest,
@@ -14,7 +14,7 @@ sport_bet = Blueprint('sport_bet', __name__)
 
 
 @sport_bet.route('/createbet', methods=['POST'])
-@server.token_service.validate_token
+@server.token_middleware.validate_token
 def create_bet(current_user):
     try:
         if current_user:
@@ -49,7 +49,7 @@ def create_bet(current_user):
         return result
 
 @sport_bet.route('/readbet', methods=['GET'])
-@server.token_service.validate_token
+@server.token_middleware.validate_token
 def read_bet(current_user):
     try:
         if current_user:
@@ -59,6 +59,9 @@ def read_bet(current_user):
                 request.args.to_dict()['end_date']
             )
             response = server.sport_service.read_bet(req)
+            return jsonify({
+
+            })
             return MessageToJson(response)
     except Exception as e:
         result = (
@@ -69,7 +72,7 @@ def read_bet(current_user):
         return result
 
 @sport_bet.route('/updatebet', methods=['PUT'])
-@server.token_service.validate_token
+@server.token_middleware.validate_token
 def update_bet(current_user):
     try:
         if current_user:
@@ -100,7 +103,7 @@ def update_bet(current_user):
         return result
 
 @sport_bet.route('/deletebet', methods=['DELETE'])    
-@server.token_service.validate_token  
+@server.token_middleware.validate_token  
 def delete(current_user):
     try:
         if current_user:

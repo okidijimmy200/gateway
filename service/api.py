@@ -1,5 +1,5 @@
 from service.interface import SportbetProvider
-from models.models.sportbet_models import (
+from models.sportbet_models import (
     CreateBetRequest,
     CreateBetResponse,
     ReadBetRequest,
@@ -10,7 +10,8 @@ from models.models.sportbet_models import (
     DeleteBetResponse
 )
 
-class SportBet:
+
+class SportBetService:
     sport_provider = SportbetProvider
 
     def __init__(self, sport_provider: SportbetProvider) -> None:
