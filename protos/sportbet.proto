@@ -48,7 +48,7 @@ message ReadBetResponse {
 }
 
 message UpdateBetRequest {
-    int32 id = 1;
+    string id = 1;
     string league = 2;
     string home_team = 3;
     string away_team = 4;

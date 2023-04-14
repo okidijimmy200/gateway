@@ -1,17 +1,17 @@
-from typing import Tuple
 from service.interface import AuthProvider
-from models.models.user_models import LoginRequest, ValidateTokenRequest, ValidateTokenResponse
+from models.user_models import LoginRequest, ValidateTokenRequest, ValidateTokenResponse, LoginResponse
 
-class Auth:
+
+class AuthService():
     auth_provider: AuthProvider
 
     def __init__(self, auth_provider: AuthProvider):
         self.auth_provider = auth_provider
 
-    def login(self, request: LoginRequest) -> Tuple[int, str]:
+    def login(self, request: LoginRequest) -> LoginResponse:
         '''login user'''
         return self.auth_provider.login(request)
 
     def validate_token(self, request: ValidateTokenRequest) -> ValidateTokenResponse:
-        '''validate token generated'''
+        '''validate user token'''
         return self.auth_provider.validate_token(request)
