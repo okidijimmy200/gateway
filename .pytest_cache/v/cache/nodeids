@@ -1,0 +1,7 @@
+[
+  "server/http/api/test_api.py::test_create_bet",
+  "server/http/api/test_api.py::test_delete",
+  "server/http/api/test_api.py::test_read_bet",
+  "server/http/api/test_api.py::test_update_bet",
+  "server/http/register/test_register.py::test_signup"
+]
