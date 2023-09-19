@@ -196,3 +196,56 @@ def test_delete(mocker):
         res = test_client.delete(test_case["path"], headers=test_case["headers"])
 
         assert res.status_code == test_case["output"]
+
+# ------------------------------------------------------------------------------------------------
+
+
+        
+# def test_create_bet(self, request: CreateBetRequest):
+#     class MockSportProviderCreate:
+#         def create_bet(self, request: CreateBetRequest) ->CreateBetResponse:
+#             return CreateBetResponse(200, 'bet created')
+
+#     mock_sport_service_1 = mock.Mock(spec=MockSportProviderCreate )
+#     mock_sport_service_1.create_bet.return_value = CreateBetResponse(200, 'bet created')
+
+#     mock_auth_service_1 = mock.Mock(spec=MockAuthProviderCreate)
+#     mock_auth_service_1.validate_token_create.return_value = ValidateTokenResponse(200, "OK", "mock_user")
+#     # mock_auth_service = MockAuthProvider()
+#     # auth_spy = mocker.spy(mock_auth_service, 'validate_token')
+
+#     flask_app = get_app(
+#         mock_auth_service_1,
+#         None,
+#         mock_sport_service_1,
+#     )
+#     test_client = flask_app.test_client()
+
+#     test_cases = [
+#         {
+#             "name": "success",
+#             "path": "/createbet",
+#             "input": {
+#                 "league": "test",
+#                 "home_team": "",
+#                 "away_team": "",
+#                 "home_team_win_odds": 0.0,
+#                 "away_team_win_odds": 0.0,
+#                 "draw_odds": 0.0,
+#                 "game_date":  23/12/2023
+#             },
+#             "output": 200
+#         },
+#     ]
+#     for test_case in test_cases:
+#         res = test_client.post(test_case['path'], json=test_case['input'], headers={
+#             # valid token here is what is produced in the validate_token call
+#                                 "Authorization": "Authorization valid"})
+#         # captured = capsys.readouterr()
+#         # assert captured.out == "foo"
+
+#         assert res.status_code == test_case['output']
+#         mock_sport_service_1.create_bet.assert_called_once_with(CreateBetRequest("test", "", "",0.0, 0.0,0.0, 23/12/2023))
+#         mock_auth_service_1.validate_token_create.assert_called_once_with(ValidateTokenRequest('valid').token)
+#         assert mock_auth_service_1.call_count == 0
+#         mock_auth_service_1.undo()

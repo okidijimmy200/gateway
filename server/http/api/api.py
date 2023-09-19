@@ -33,6 +33,7 @@ def create_bet(current_user):
                 data.get('game_date'),
                 )
             response = server.sport_service.create_bet(req)
+            print(response)
             reason = {
                 "code": response.code,
                 "reason": response.reason
